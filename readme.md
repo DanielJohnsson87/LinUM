@@ -1,5 +1,16 @@
-# LinUM - Bibliotek
+# LinUM - Labb 6 Bibliotek
 Utvecklingsrepo Lab 6 i kursen Linux som utvecklingsmiljö på Umeå universitet.
+
+## Förslag på filstruktur
+| *Mapp*            | *Beskrivning*                   |  
+| ------------------| ------------------------------- |  
+| src/              | Alla källfiler                  |
+| src/libresistance | Källfiler till libresistance.so |
+| src/libpower      | Källfiler till libpower.so      |
+| src/libcomponent  | Källfiler till libcomponent.so   |
+| build/            | Kompilerade filer         |  
+
+
 
 ## Kom igång med projektet
 ```bash

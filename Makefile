@@ -48,7 +48,7 @@ libresistance:
 
 # Create all libraries
 .PHONEY : lib 
-lib : $(LIBS)
+lib : 
 	$(MAKE) -C $(SRC_DIR)/libcomponent
 	$(MAKE) -C $(SRC_DIR)/libpower
 	$(MAKE) -C $(SRC_DIR)/libresistance
@@ -58,7 +58,7 @@ all: $(TARGET)
 
 .PHONEY : clean
 clean: $(LIBS)
-	rm -f $(OBJECTS) $(TARGET) $(DEP) $(LIBS)
+	rm -f $(OBJECTS) $(TARGET) $(DEP) 
 	$(MAKE) -C $(SRC_DIR)/libcomponent clean
 	$(MAKE) -C $(SRC_DIR)/libpower clean
 	$(MAKE) -C $(SRC_DIR)/libresistance clean

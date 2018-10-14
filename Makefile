@@ -17,7 +17,7 @@ LIBS = libcomponent
 
 # Linking
 $(TARGET) : $(OBJECTS) $(LIBS)
-	$(CC) $(LDFLAGS) $(LDLIBS) $< -o $@
+	$(CC) $(LDFLAGS) $< $(LDLIBS) -o $@
 
 # Complile and generate dependencies
 %.o : %.c 

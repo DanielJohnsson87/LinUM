@@ -11,7 +11,8 @@
  * components in a circut. This function handles both
  * parallel and series circuts.
  */
-float calc_resistance(int count, char conn, float *array)
+float
+calc_resistance(int count, char conn, float *array)
 {
   float resistance = 0.0;
 
@@ -34,7 +35,8 @@ float calc_resistance(int count, char conn, float *array)
 /**
  * Calculate resistance for parallel circuts.
  */
-float calc_resistance_p(int count, char conn, float *array)
+float
+calc_resistance_p(int count, char conn, float *array)
 {
   float resistance = 0.0;
   for(int i = 0; i < count; i++) {
@@ -50,7 +52,8 @@ float calc_resistance_p(int count, char conn, float *array)
 /**
  * Calculate resistance for circuits in series.
  */
-float calc_resistance_s(int count, char conn, float *array )
+float
+calc_resistance_s(int count, char conn, float *array )
 {
   float resistance = 0.0;
   for(int i = 0; i < count; i++) {

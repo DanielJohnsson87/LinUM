@@ -1,11 +1,12 @@
 #include <stdio.h>
 #include "calc_resistance.h"
-int main() {	
+int main()
+{
 	int count = 3;
 	float array[(sizeof(float)*3)];
 	char conn;
 	float resistance = 0.0;
-	
+
 	printf("Is the circut in series or parallel? [S | P]: ");
 	scanf("%c", &conn);
 

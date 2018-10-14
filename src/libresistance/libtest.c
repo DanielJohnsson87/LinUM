@@ -1,30 +1,37 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include "calc_resistance.h"
 int main()
 {
-	int count = 3;
-	float array[(sizeof(float)*3)];
-	char conn;
-	float resistance = 0.0;
+  int count;
+  //float array[(sizeof(float)*3)];
+  char conn;
+  float resistance = 0.0;
 
-	printf("Is the circut in series or parallel? [S | P]: ");
-	scanf("%c", &conn);
+  printf("How many resistors?: ");
+  scanf("%d", &count);
 
-	printf("Resistance 1: ");
-	scanf("%f",&array[0]);
-	printf("Resistance 2: ");
-	scanf("%f",&array[1]);
-	printf("Resistance 3: ");
-	scanf("%f",&array[2]);
+  float * array = malloc(count * sizeof(float));
 
-	printf("\nResistance \t  Value \n");
-	for(int i = 0; i < count; i++) {
-		printf("Resistance %d \t  %f \t \n", i,array[i]);
-	}
+  for(int i = 0; i < count; i++)
+  {
+    printf("Value resistor %d: ", i);
+    scanf("%f", &array[i]);
+  }
 
-	resistance = calc_resistance(count, conn, array);
-	printf("Connection is %c \n",conn);
-	printf("Resistance is %f \n", resistance);
-	return 0;
+  printf("Series or parallel circut? Answer: S or P: ");
+  scanf(" %c", &conn);
+
+  resistance = calc_resistance(count, conn, array);
+
+  printf("\nResistance \t  Value \n");
+  for(int i = 0; i < count; i++) {
+    printf("Resistance %d \t  %f \t \n", i,array[i]);
+  }
+
+  printf("Connection is %c \n",conn);
+  printf("Resistance is %f \n", resistance);
+  free(array);
+  return 0;
 }
 

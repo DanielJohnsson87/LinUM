@@ -6,7 +6,7 @@ TARGET = libpower.a
 CC = gcc
 CFLAGS = -Wall -g -MMD 
 SRC_DIR = .
-SOURCE = $(wildcard $(SRC_DIR)/*.c)
+SOURCE = libpower.c #$(wildcard $(SRC_DIR)/*.c)
 OBJECTS = $(SOURCE:.c=.o)
 DEP = $(OBJECTS:.o=.d)
 

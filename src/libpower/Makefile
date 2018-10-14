@@ -1,17 +1,37 @@
-all:		test.o libpower.a
-		gcc -o test test.c -L. -lpower
+#Local make file
 
-lib:		libpower.a
-libpower.a:	libpower.o
-		ar crv libpower.a libpower.o
+#Variables
 
-libpower.o:	libpower.h libpower.c
-		gcc -c libpower.c
+TARGET = libpower.a
+CC = gcc
+CFLAGS = -Wall -g -MMD 
+SRC_DIR = .
+SOURCE = $(wildcard $(SRC_DIR)/*.c)
+OBJECTS = $(SOURCE:.c=.o)
+DEP = $(OBJECTS:.o=.d)
 
+# Complile and generate dependencies
+%.o : %.c
+	$(CC) $(CFLAGS) -c $< -o $@
+
+# Create libraries
+$(TARGET): $(OBJECTS)
+	$(AR) crv $@ $^
+
+.PHONEY : lib 
+lib : $(TARGET)
+
+.PHONEY : all
+all: $(TARGET)
+
+.PHONEY : clean
 clean:
-		rm -f libpower.a
-		rm -f *.o
-		rm -f test
-		rm -f *.c~
-		rm -f *.h~
+	rm -f $(OBJECTS) $(TARGET) $(DEP)
 
+# Unistall
+.PHONEY : uninstall
+uninstall:
+	rm -f $(PREFIX)/bin/$(TARGET)
+
+# include all dependecy files 
+-include $(DEP)

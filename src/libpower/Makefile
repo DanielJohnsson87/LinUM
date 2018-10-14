@@ -12,3 +12,6 @@ clean:
 		rm -f libpower.a
 		rm -f *.o
 		rm -f test
+		rm -f *.c~
+		rm -f *.h~
+

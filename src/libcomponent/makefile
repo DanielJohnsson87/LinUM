@@ -2,13 +2,14 @@
 
 #Variables
 
-TARGET = libpower.a
+TARGET = libcomponent.a
 CC = gcc
 CFLAGS = -Wall -g -MMD 
 SRC_DIR = .
-SOURCE = libpower.c #$(wildcard $(SRC_DIR)/*.c)
+SOURCE = $(wildcard $(SRC_DIR)/*.c)
 OBJECTS = $(SOURCE:.c=.o)
 DEP = $(OBJECTS:.o=.d)
+
 
 # Complile and generate dependencies
 %.o : %.c
@@ -27,6 +28,12 @@ all: $(TARGET)
 .PHONEY : clean
 clean:
 	rm -f $(OBJECTS) $(TARGET) $(DEP)
+
+# Installation
+.PHONEY : install
+install : $(TARGET)
+	mkdir -p $(PREFIX)/bin
+	install -m 775 $< $(PREFIX)/bin
 
 # Unistall
 .PHONEY : uninstall

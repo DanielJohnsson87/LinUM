@@ -18,7 +18,7 @@ DEP = $(OBJECTS:.o=.d)
 # Create libraries
 $(TARGET): $(OBJECTS)
 	#$(AR) crv $@ $^
-	$(CC) -shared -L. libcomponent.o -o $(TARGET)
+	$(CC) -shared -fPIC libcomponent.o -o $(TARGET)
 
 .PHONEY : lib 
 lib : $(TARGET)
@@ -29,17 +29,6 @@ all: $(TARGET)
 .PHONEY : clean
 clean:
 	rm -f $(OBJECTS) $(TARGET) $(DEP)
-
-# Installation
-.PHONEY : install
-install : $(TARGET)
-	mkdir -p $(PREFIX)/bin
-	install -m 775 $< $(PREFIX)/bin
-
-# Unistall
-.PHONEY : uninstall
-uninstall:
-	rm -f $(PREFIX)/bin/$(TARGET)
 
 # include all dependecy files 
 -include $(DEP)

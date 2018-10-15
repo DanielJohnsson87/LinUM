@@ -2,9 +2,9 @@
 
 #Variables
 
-TARGET = libcomponent.a
+TARGET = libcomponent.so
 CC = gcc
-CFLAGS = -Wall -g -MMD 
+CFLAGS = -Wall -g -MMD -fPIC
 SRC_DIR = .
 SOURCE = $(wildcard $(SRC_DIR)/*.c)
 OBJECTS = $(SOURCE:.c=.o)
@@ -17,7 +17,8 @@ DEP = $(OBJECTS:.o=.d)
 
 # Create libraries
 $(TARGET): $(OBJECTS)
-	$(AR) crv $@ $^
+	#$(AR) crv $@ $^
+	$(CC) -shared -L. libcomponent.o -o $(TARGET)
 
 .PHONEY : lib 
 lib : $(TARGET)

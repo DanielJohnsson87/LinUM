@@ -5,9 +5,12 @@ TARGET = testmake
 PREFIX = /usr/local
 CC = gcc
 CFLAGS = -Wall -g -MMD 
-LDFLAGS = -L$(SRC_DIR)/libcomponent \
-	-L$(SRC_DIR)/libpower \
-	-L$(SRC_DIR)/libresistance
+#LDFLAGS = -L$(SRC_DIR)/libcomponent \
+#	-L$(SRC_DIR)/libpower \
+#	-L$(SRC_DIR)/libresistance \
+#	-Wl,-rpath,$(SRC_DIR)/libcomponent,$(SRC_DIR)/libpower,$(SRC_DIR)/libresistance
+
+LDFLAGS = -L./lib/ -Wl,-rpath,./lib/
 
 LDLIBS = -lcomponent -lpower -lresistance
 
@@ -37,14 +40,18 @@ $(TARGET) : $(OBJECTS) libcomponent libpower libresistance
 .PHONEY: libcomponent
 libcomponent :
 	$(MAKE) -C $(SRC_DIR)/libcomponent
+	mkdir lib; mv $(SRC_DIR)/libcomponent/libcomponent.so lib/libcomponent.so
 
 .PHONEY: libpower
 libpower:
 	$(MAKE) -C $(SRC_DIR)/libpower
+	mkdir lib; mv $(SRC_DIR)/libpower/libpower.so lib/libpower.so
 
 .PHONEY: libresistance
 libresistance:
 	$(MAKE) -C $(SRC_DIR)/libresistance
+	mkdir lib; mv $(SRC_DIR)/libresistance/libresistance.so lib/libresistance.so
+
 
 # Create all libraries
 .PHONEY : lib 

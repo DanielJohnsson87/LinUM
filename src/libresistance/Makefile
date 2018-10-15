@@ -2,9 +2,9 @@
 
 #Variables
 
-TARGET = libresistance.a
+TARGET = libresistance.so
 CC = gcc
-CFLAGS = -Wall -g -MMD 
+CFLAGS = -Wall -g -MMD -fPIC
 SRC_DIR = .
 SOURCE = libresistance.c#$(wildcard $(SRC_DIR)/*.c)
 OBJECTS = $(SOURCE:.c=.o)
@@ -16,7 +16,8 @@ DEP = $(OBJECTS:.o=.d)
 
 # Create libraries
 $(TARGET): $(OBJECTS)
-	$(AR) crv $@ $^
+	#$(AR) crv $@ $^
+	$(CC) -shared -L. libresistance.o -o $(TARGET)
 
 .PHONEY : lib 
 lib : $(TARGET)

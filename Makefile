@@ -1,7 +1,8 @@
 # MAKEFILE for main program
 #Variables
 
-TARGET = testmake
+#TARGET = testmake
+TARGET = electrotest
 PREFIX = /usr/local
 CC = gcc
 CFLAGS = -Wall -g -MMD 

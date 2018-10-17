@@ -1,8 +1,25 @@
-# MAKEFILE for main program
+#MAKEFILE for main program
 #Variables
+SHELL = /bin/sh
 
+# main program of make file
 TARGET = testmake
 PREFIX = /usr/local
+# install dir for excutebals
+EXEC_PREFIX = $(PREFIX)
+# install for binaries
+BINDIR = $(EXEC_PREFIX)/bin
+# install dir for header files
+INCLUDEDIR = $(PREFIX)/include
+# install dir for libraies
+LIBDIR = $(PREFIX)/lib
+# defalut install command
+INSTALL = install -m 775
+# install command for main program
+INSTALL_PROGRAM = $(INSTALL)
+# install command for libraies
+INSTALL_DATA = $(INSTALL)
+
 CC = gcc
 CFLAGS = -Wall -g -MMD 
 #LDFLAGS = -L$(SRC_DIR)/libcomponent \
@@ -65,22 +82,36 @@ all: $(TARGET)
 
 .PHONEY : clean
 clean: 
-	rm -f $(OBJECTS) $(TARGET) $(DEP) 
+	$(RM) $(OBJECTS) $(TARGET) $(DEP) 
 	rm -rf $(LIB_DIR)
 	$(MAKE) -C $(SRC_DIR)/libcomponent clean
 	$(MAKE) -C $(SRC_DIR)/libpower clean
 	$(MAKE) -C $(SRC_DIR)/libresistance clean
 
+
+# Create all install dirs
+#installdirs: mkinstalldirs
+#	$(SRC_DIR)/mkinstalldirs $(BINDIR) $(libdir)
+
 # Installation
 .PHONEY : install
-install : $(TARGET)
+install : lib $(TARGET) | libfolder 
 	mkdir -p $(PREFIX)/bin
-	install -m 775 $< $(PREFIX)/bin
+	mkdir -p $(PREFIX)/lib
+
+	$(INSTALL_PROGRAM) $(TARGET) $(BINDIR)/$(TARGET)
+	$(INSTALL_DATA) ./lib/libcomponent.so $(LIBDIR)/libcomponent.so
+	$(INSTALL_DATA) ./lib/libresistance.so $(LIBDIR)/libpower.so
+	$(INSTALL_DATA) ./lib/libresistance.so $(LIBDIR)/libresistance.so
 
 # Unistall
 .PHONEY : uninstall
 uninstall:
-	rm -f $(PREFIX)/bin/$(TARGET)
+	#rm -f $(PREFIX)/bin/$(TARGET)
+	$(RM) $(BINDIR)/$(TARGET)
+	$(RM) $(LIBDIR)/libcomponent.so
+	$(RM) $(LIBDIR)/libpower.so
+	$(RM) $(LIBDIR)/libresistance.so
 
 # include all dependecy files 
 -include $(DEP)

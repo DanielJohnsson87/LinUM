@@ -5,27 +5,23 @@ SHELL = /bin/sh
 # main program of make file
 TARGET = electrotest
 PREFIX = /usr/local
-# install dir for excutebals
+# install dir for excuteables
 EXEC_PREFIX = $(PREFIX)
 # install for binaries
 BINDIR = $(EXEC_PREFIX)/bin
 # install dir for header files
 INCLUDEDIR = $(PREFIX)/include
-# install dir for libraies
+# install dir for libraries
 LIBDIR = $(PREFIX)/lib
-# defalut install command
+# default install command
 INSTALL = install -m 775
 # install command for main program
 INSTALL_PROGRAM = $(INSTALL)
-# install command for libraies
+# install command for libraries
 INSTALL_DATA = $(INSTALL)
 
 CC = gcc
 CFLAGS = -Wall -g -MMD 
-#LDFLAGS = -L$(SRC_DIR)/libcomponent \
-#	-L$(SRC_DIR)/libpower \
-#	-L$(SRC_DIR)/libresistance \
-#	-Wl,-rpath,$(SRC_DIR)/libcomponent,$(SRC_DIR)/libpower,$(SRC_DIR)/libresistance
 
 LDFLAGS = -L./lib/ -Wl,-rpath,./lib/
 
@@ -49,13 +45,13 @@ $(TARGET) : $(OBJECTS) libcomponent libpower libresistance
 %.o : %.c 
 	$(CC) $(CFLAGS) -c $< $(INC) -o $@
 
-# Create libray directory
+# Create library directory
 libfolder: 
 	mkdir -p lib
 
 # Create libraries 
 .PHONEY: libcomponent
-libcomponent : | libfolder
+libcomponent : libfolder
 	$(MAKE) -C $(SRC_DIR)/libcomponent
 	cp $(SRC_DIR)/libcomponent/libcomponent.so lib/libcomponent.so
 
@@ -83,15 +79,10 @@ all: $(TARGET)
 .PHONEY : clean
 clean: 
 	$(RM) $(OBJECTS) $(TARGET) $(DEP) 
-	rm -rf $(LIB_DIR)
+	rm -rf ./lib
 	$(MAKE) -C $(SRC_DIR)/libcomponent clean
 	$(MAKE) -C $(SRC_DIR)/libpower clean
 	$(MAKE) -C $(SRC_DIR)/libresistance clean
-
-
-# Create all install dirs
-#installdirs: mkinstalldirs
-#	$(SRC_DIR)/mkinstalldirs $(BINDIR) $(libdir)
 
 # Installation
 .PHONEY : install
@@ -107,7 +98,6 @@ install : lib $(TARGET) | libfolder
 # Unistall
 .PHONEY : uninstall
 uninstall:
-	#rm -f $(PREFIX)/bin/$(TARGET)
 	$(RM) $(BINDIR)/$(TARGET)
 	$(RM) $(LIBDIR)/libcomponent.so
 	$(RM) $(LIBDIR)/libpower.so

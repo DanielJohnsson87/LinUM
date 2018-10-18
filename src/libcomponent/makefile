@@ -2,9 +2,9 @@
 
 #Variables
 
-TARGET = libcomponent.a
+TARGET = libcomponent.so
 CC = gcc
-CFLAGS = -Wall -g -MMD 
+CFLAGS = -Wall -g -MMD -fPIC
 SRC_DIR = .
 SOURCE = $(wildcard $(SRC_DIR)/*.c)
 OBJECTS = $(SOURCE:.c=.o)
@@ -17,7 +17,8 @@ DEP = $(OBJECTS:.o=.d)
 
 # Create libraries
 $(TARGET): $(OBJECTS)
-	$(AR) crv $@ $^
+	#$(AR) crv $@ $^
+	$(CC) -shared -fPIC libcomponent.o -o $(TARGET)
 
 .PHONEY : lib 
 lib : $(TARGET)
@@ -28,17 +29,6 @@ all: $(TARGET)
 .PHONEY : clean
 clean:
 	rm -f $(OBJECTS) $(TARGET) $(DEP)
-
-# Installation
-.PHONEY : install
-install : $(TARGET)
-	mkdir -p $(PREFIX)/bin
-	install -m 775 $< $(PREFIX)/bin
-
-# Unistall
-.PHONEY : uninstall
-uninstall:
-	rm -f $(PREFIX)/bin/$(TARGET)
 
 # include all dependecy files 
 -include $(DEP)

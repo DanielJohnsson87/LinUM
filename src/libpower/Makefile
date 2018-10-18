@@ -2,9 +2,9 @@
 
 #Variables
 
-TARGET = libpower.a
+TARGET = libpower.so
 CC = gcc
-CFLAGS = -Wall -g -MMD 
+CFLAGS = -Wall -g -MMD -fPIC
 SRC_DIR = .
 SOURCE = libpower.c #$(wildcard $(SRC_DIR)/*.c)
 OBJECTS = $(SOURCE:.c=.o)
@@ -16,7 +16,8 @@ DEP = $(OBJECTS:.o=.d)
 
 # Create libraries
 $(TARGET): $(OBJECTS)
-	$(AR) crv $@ $^
+	#$(AR) crv $@ $^
+	$(CC) -shared -L. libpower.o -o $(TARGET)
 
 .PHONEY : lib 
 lib : $(TARGET)

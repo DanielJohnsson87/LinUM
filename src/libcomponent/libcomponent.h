@@ -7,7 +7,8 @@
 #ifndef LIBCOMPONENT_H_
 #define LIBCOMPONENT_H_
 
-#define NBR_COMPONTENTS 3
+
+const int NBR_COMPONTENTS = 3;
 
 int e_resistance(float orgin_resistance, float *res_array);
 

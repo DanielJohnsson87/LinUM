@@ -3,7 +3,7 @@
 SHELL = /bin/sh
 
 # main program of make file
-TARGET = testmake
+TARGET = electrotest
 PREFIX = /usr/local
 # install dir for excutebals
 EXEC_PREFIX = $(PREFIX)

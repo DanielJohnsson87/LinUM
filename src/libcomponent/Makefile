@@ -2,13 +2,14 @@
 SHELL = /bin/sh
 #Variables
 
-TARGET = libresistance.so
+TARGET = libcomponent.so
 CC = gcc
 CFLAGS = -Wall -g -MMD -fPIC
 SRC_DIR = .
-SOURCE = libresistance.c
+SOURCE = $(wildcard $(SRC_DIR)/*.c)
 OBJECTS = $(SOURCE:.c=.o)
 DEP = $(OBJECTS:.o=.d)
+
 
 # Complile and generate dependencies
 %.o : %.c
@@ -16,10 +17,8 @@ DEP = $(OBJECTS:.o=.d)
 
 # Create libraries
 $(TARGET): $(OBJECTS)
-	$(CC) -shared -L. libresistance.o -o $(TARGET)
+	$(CC) -shared -fPIC libcomponent.o -o $(TARGET)
 
-.PHONEY : lib 
-lib : $(TARGET)
 
 .PHONEY : all
 all: $(TARGET)
@@ -27,9 +26,7 @@ all: $(TARGET)
 # Remove all created files
 .PHONEY : clean
 clean:
-	rm -f $(OBJECTS) $(TARGET) $(DEP)
-
+	$(RM) $(OBJECTS) $(TARGET) $(DEP)
 
 # include all dependecy files 
 -include $(DEP)
-

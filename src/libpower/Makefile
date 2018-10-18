@@ -1,12 +1,12 @@
 #Local make file
-
+SHELL = /bin/sh
 #Variables
 
 TARGET = libpower.so
 CC = gcc
 CFLAGS = -Wall -g -MMD -fPIC
 SRC_DIR = .
-SOURCE = libpower.c #$(wildcard $(SRC_DIR)/*.c)
+SOURCE = libpower.c 
 OBJECTS = $(SOURCE:.c=.o)
 DEP = $(OBJECTS:.o=.d)
 
@@ -16,23 +16,17 @@ DEP = $(OBJECTS:.o=.d)
 
 # Create libraries
 $(TARGET): $(OBJECTS)
-	#$(AR) crv $@ $^
 	$(CC) -shared -L. libpower.o -o $(TARGET)
 
-.PHONEY : lib 
-lib : $(TARGET)
 
 .PHONEY : all
 all: $(TARGET)
 
+# Remove all created files
 .PHONEY : clean
 clean:
-	rm -f $(OBJECTS) $(TARGET) $(DEP)
+	$(RM) $(OBJECTS) $(TARGET) $(DEP)
 
-# Unistall
-.PHONEY : uninstall
-uninstall:
-	rm -f $(PREFIX)/bin/$(TARGET)
 
 # include all dependecy files 
 -include $(DEP)

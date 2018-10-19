@@ -45,12 +45,11 @@ void generate_e12_series(float e12_serie[], int size){
  * to the orgin_resistance and adds them to res_array
  * Usued resistors in res_array is set to 0
  * Returns the number of E12 resistors (0-3)
- * Returns -1 if orgin_resistance
- * is negativ
+ * Returns -1 if orgin_resistance is negativ or res_array is a null pointer
  */
 int e_resistance(float orgin_resistance, float* res_array){
 
-    if (orgin_resistance < 0)
+    if (orgin_resistance < 0 || res_array == NULL)
         return -1;
 
     int count = 0;
@@ -68,7 +67,7 @@ int e_resistance(float orgin_resistance, float* res_array){
         if (curr_res_value >= e12_series[i]){
             curr_res_value = curr_res_value - e12_series[i];
 
-            if (count < NBR_COMPONTENTS){
+            if (count < NBR_E12_COMPONTENTS){
                 *(res_array+count) = e12_series[i];
                 count++;
             }  
@@ -76,7 +75,7 @@ int e_resistance(float orgin_resistance, float* res_array){
     }
 
     // set unused components values to zero
-    for (int i = count; i < NBR_COMPONTENTS; i++){
+    for (int i = count; i < NBR_E12_COMPONTENTS; i++){
         *(res_array + i) = 0;
     }
 

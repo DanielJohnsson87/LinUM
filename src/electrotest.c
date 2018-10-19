@@ -24,10 +24,10 @@ int main (void) {
     float voltage;
     char  connection[200];
     int   component_count;
-    int   i;
+    
     float *components;
     float resistor;
-    float e12_replace[NBR_COMPONTENTS];
+    float e12_replace[NBR_E12_COMPONTENTS];
     
     printf("Ange spänningskälla i V: ");
     scanf("%f", &voltage);
@@ -46,7 +46,7 @@ int main (void) {
 	 exit(-1);
     }
     
-    for (i = 0; i < component_count; i++) {
+    for (int i = 0; i < component_count; i++) {
 	 printf("Komponent %d i ohm: ", i+1);
 	 scanf("%f.d", &components[i]);
     }
@@ -64,7 +64,7 @@ int main (void) {
     printf("Ersättningsresistanser i E12-serien kopplade i serie:\n");
 
     for (int i = 0; i < component_count; i++)
-	 print_resistor( e12_replace[i]);
+	 print_resistor(e12_replace[i]);
 }
 
 void print_resistor(float val)

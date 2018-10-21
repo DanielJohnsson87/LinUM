@@ -1,12 +1,12 @@
 #Local make file
-SHELL = /bin/sh
+SHELL = /bin/bash
 #Variables
 
 TARGET = libcomponent.so
 CC = gcc
 CFLAGS = -Wall -g -MMD -fPIC
-SRC_DIR = .
-SOURCE = $(wildcard $(SRC_DIR)/*.c)
+SRCDIR = .
+SOURCE = libcomponent.c 
 OBJECTS = $(SOURCE:.c=.o)
 DEP = $(OBJECTS:.o=.d)
 
@@ -17,7 +17,7 @@ DEP = $(OBJECTS:.o=.d)
 
 # Create libraries
 $(TARGET): $(OBJECTS)
-	$(CC) -shared -fPIC libcomponent.o -o $(TARGET)
+	$(CC) -shared -fPIC $< -o $(TARGET)
 
 
 .PHONEY : all

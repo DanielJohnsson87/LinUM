@@ -1,11 +1,11 @@
 #Local make file
-SHELL = /bin/sh
+SHELL = /bin/bash
 #Variables
 
 TARGET = libresistance.so
 CC = gcc
 CFLAGS = -Wall -g -MMD -fPIC
-SRC_DIR = .
+SRCDIR = .
 SOURCE = libresistance.c
 OBJECTS = $(SOURCE:.c=.o)
 DEP = $(OBJECTS:.o=.d)
@@ -16,7 +16,7 @@ DEP = $(OBJECTS:.o=.d)
 
 # Create libraries
 $(TARGET): $(OBJECTS)
-	$(CC) -shared -L. libresistance.o -o $(TARGET)
+	$(CC) -shared -L. $< -o $(TARGET)
 
 .PHONEY : lib 
 lib : $(TARGET)

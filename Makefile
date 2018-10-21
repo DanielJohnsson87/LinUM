@@ -1,7 +1,7 @@
 #MAKEFILE for main program
 # Authors:
 # Thomas Johansson
-# DanielJohnsson
+# Daniel Johnsson
 # Mårten Norman
 #
 # Date: 2018-10-15

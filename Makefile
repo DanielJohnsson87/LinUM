@@ -6,8 +6,9 @@
 #
 # Date: 2018-10-15
 
+SHELL = /bin/bash
+
 #Variables
-SHELL = /bin/sh
 
 # main program of make file
 TARGET = electrotest
@@ -25,7 +26,7 @@ INSTALL = install -m 775
 # install command for main program
 INSTALL_PROGRAM = $(INSTALL)
 # install command for libraies
-INSTALL_DATA = $(INSTALL)
+INSTALL_DATA = $(INSTALL) -t
 # Local lib directory
 LOCAL_LIBDIR = lib
 
@@ -41,7 +42,7 @@ LDINSTALLFLAGS = -L$(LIBDIR) -Wl,-rpath,$(LIBDIR)
 LDLIBS = -lcomponent -lpower -lresistance
 #*************************************************************
 
-SRCDIR := src
+SRCDIR = src
 SOURCE = $(wildcard $(SRCDIR)/*.c)
 OBJECTS = $(SOURCE:.c=.o)
 DEP = $(OBJECTS:.o=.d)
@@ -51,12 +52,12 @@ HEADERS = $(wildcard $(SRCDIR)/libcomponent/*.h) \
 		  $(wildcard $((SRCDIR)/libresistance/*.h))
 
 
-# Linking
-$(TARGET) : $(OBJECTS) libcomponent libpower libresistance
+# Linking of target after all libraies have been compiled
+$(TARGET) : $(OBJECTS) | lib 
 	$(CC) $(LDFLAGS) $< $(LDLIBS) -o $@
 
-# Linking for install
-installtarget :  $(OBJECTS) lib 
+# Linking of target for install
+installtarget :  $(OBJECTS) | lib 
 	$(CC) $(LDINSTALLFLAGS) $< $(LDLIBS) -o $(TARGET)
 
 # Complile and generate dependencies
@@ -88,9 +89,6 @@ libresistance: | libfolder
 # Create all libraries
 .PHONEY : lib
 lib : libcomponent libpower libresistance 
-	$(MAKE) libcomponent
-	$(MAKE) libpower
-	$(MAKE) libresistance
 
 .PHONEY : all
 all: $(TARGET)
@@ -113,16 +111,16 @@ installdirs:
 
 # Installation
 .PHONEY : install
-install : lib | installdirs
+install : lib | installdirs 
 
-	$(INSTALL_DATA) $(SRCDIR)/libcomponent/libcomponent.h $(INCLUDEDIR)/libcomponent.h
-	$(INSTALL_DATA) $(SRCDIR)/libpower/libpower.h $(INCLUDEDIR)/libpower.h
-	$(INSTALL_DATA) $(SRCDIR)/libresistance/libresistance.h $(INCLUDEDIR)/libresistance.h
+	$(INSTALL_DATA) $(INCLUDEDIR) $(SRCDIR)/libcomponent/libcomponent.h
+	$(INSTALL_DATA) $(INCLUDEDIR) $(SRCDIR)/libpower/libpower.h
+	$(INSTALL_DATA) $(INCLUDEDIR) $(SRCDIR)/libresistance/libresistance.h
+
+	$(INSTALL_DATA) $(LIBDIR) $(LOCAL_LIBDIR)/libcomponent.so
+	$(INSTALL_DATA) $(LIBDIR) $(LOCAL_LIBDIR)/libpower.so
+	$(INSTALL_DATA) $(LIBDIR) $(LOCAL_LIBDIR)/libresistance.so
 	
-	$(INSTALL_DATA) $(LOCAL_LIBDIR)/libcomponent.so $(LIBDIR)/libcomponent.so
-	$(INSTALL_DATA) $(LOCAL_LIBDIR)/libpower.so $(LIBDIR)/libpower.so
-	$(INSTALL_DATA) $(LOCAL_LIBDIR)/libresistance.so $(LIBDIR)/libresistance.so
-
 	$(MAKE) installtarget
 
 	$(INSTALL_PROGRAM) $(TARGET) $(BINDIR)/$(TARGET)

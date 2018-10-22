@@ -17,44 +17,98 @@
 #include <stdio.h>
 #include <ctype.h>
 #include <stdlib.h>
+#include <string.h>
+#define BUFFERLENGHT 5
 
+int readInput(char *input, int lenght, char* promt_msg);
 void print_resistor(float val);
 
 int main (void) {
     float voltage;
-    char  connection[200];
+    char  connection;//[200];
     int   component_count;
+
+    char input[BUFFERLENGHT];
     
     float *components;
     float resistor;
     float e12_replace[NBR_E12_COMPONTENTS];
     
-    printf("Ange spänningskälla i V: ");
-    scanf("%f", &voltage);
+    
+    int correct_input = 0;
+    
+    // Read in voltage  
+    while (correct_input == 0){
+        if(readInput(input, sizeof(input)/sizeof(char), "Ange spänningskälla i V: ")){
+            correct_input = sscanf(input, "%f", &voltage);
+            if (correct_input == 0){
+                printf("Felaktig inmatning\n");
+            }
+        }    
+    }
 
-    printf("Ange koppling[S | P]: ");
-    scanf("%s", connection);
-    connection[0] = toupper(connection[0]);
+    correct_input = 0;
+    // Read connection type
+    while (correct_input == 0){
+        if(readInput(input, sizeof(input)/sizeof(char), "Ange koppling[S | P]: ")){
+            printf("Input = %s\n", input);
+            correct_input = sscanf(&input[0], "%c", &connection);
+            
+            if (correct_input == 0){
+                printf("Felaktig inmatning\n");
+            }
+        }    
+    }
 
+        
+    connection = toupper(connection);
 
-    printf("Antal komponenter: ");
-    scanf("%d", &component_count);
+    // Read number of components
+    correct_input = 0;
+    while (correct_input == 0){
+        if(readInput(input, sizeof(input)/sizeof(char), "Antal komponenter: ")){
+            correct_input = sscanf(input, "%d", &component_count);
+            if (correct_input == 0){
+                printf("Felaktig inmatning\n");
+            }
+        }    
+    }
 
     components = (float *) calloc(component_count, sizeof(float));
+    
     if (components == NULL) {
 	 printf("failed to allocate array of %d floats\n", component_count);
 	 exit(-1);
     }
     
+    char promt[50];
+
     for (int i = 0; i < component_count; i++) {
-	 printf("Komponent %d i ohm: ", i+1);
-	 scanf("%f.d", &components[i]);
+        sprintf(promt,"Komponent %d i ohm: ", i+1);
+        correct_input = 0;
+        while (correct_input == 0){
+            if(readInput(input, sizeof(input)/sizeof(char), promt)){
+                correct_input = sscanf(input, "%f.d", &components[i]);
+                if (correct_input == 0){
+                    printf("Felaktig inmatning\n");
+                }
+            }
+        }    
     }
+	 //printf("Komponent %d i ohm: ", i+1);
+	 //scanf("%f.d", &components[i]);
+    
 
-    resistor = calc_resistance(component_count, connection[0], components);
-    printf("Ersättningsresistans:\n");
-    printf("%.1f\n", resistor);
-
+    resistor = calc_resistance(component_count, connection, components);
+    
+    if (resistor == -1){
+      exit(-1);  
+    }
+    else{
+        printf("Ersättningsresistans:\n");
+        printf("%.1f\n", resistor);
+    }
+    
     free(components);
     
     printf("Effekt\n");
@@ -92,6 +146,49 @@ void print_resistor(float val)
      else                           /* very big */
 	  printf("%6.1e\n", val);
 }
+
+/**
+ * Prints a promt with name promt_msg and reads reads lenght number of charathers
+ * in to the string input from stdin. If the stdin contais more charaters than lenght
+ * it clears all charaters left in stdin and returns 0;
+ * Return 1 on succes and 0 if it could not read all charaters from stdin
+ */ 
+
+int readInput(char *input, int lenght, char* promt_msg){
+    printf("%s", promt_msg);
+
+    if (fgets(input, lenght, stdin)){
+
+        printf ("Antal tecken %d, lenght = %d\n", strlen(input), lenght);
+        if (strlen(input) < lenght-1){
+            return 1;
+        }
+        else if (strlen(input) == lenght-1){
+            if (input[lenght-2] == '\n'){
+                             
+                return 1;
+            }
+            else{
+                while (!strchr(input, '\n') && fgets(input, lenght, stdin)){
+                    printf("Ät tecken 1\n");
+                }
+            }
+        }
+        else{
+            while (!strchr(input, '\n') && fgets(input, lenght, stdin)){
+                printf("Ät tecken 2\n");
+            }
+
+        }
+        
+        fprintf(stderr, "Wrong input supplied\n");
+        
+    }
+
+    return 0;
+}
+
+
 
 /** Informal interaction format specification
 Ange spänningskälla i V: 50

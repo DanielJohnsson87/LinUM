@@ -1,3 +1,23 @@
+/**
+* Filename: libresistance.c
+* Author: Daniel Johnsson
+* Date: 2018-10-23
+*
+* Calculates the minimum resistance needed to replace N resistors
+* in parallel or in series.
+*
+* Series circuit
+* R = R1 + R2 ... R3
+*
+* Parallel circuit
+* R = 1 / ( 1/R1 + 1/R2 ... + 1/R3 )
+*
+* int count: Number of resistors in circuit
+* char conn: Type of circuit S or P for series or parallel
+* float *array: Values from the resistors to be replaced
+*
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "libresistance.h"
@@ -14,7 +34,6 @@ float calc_resistance(int count, char conn, float *array) {
 	}
 	
 	if(conn != 'S' && conn != 'P') {
-		printf("Wrong connection supplied. You passed %c, value should be either S or P", conn);
 		return -1;
 	}
 	

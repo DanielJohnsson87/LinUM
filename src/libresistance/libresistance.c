@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <ctype.h>
 #include "libresistance.h"
 
 float calc_resistance_p(int count, char conn, float *array);
@@ -9,12 +10,15 @@ float calc_resistance_s(int count, char conn, float *array);
 float calc_resistance(int count, char conn, float *array) {
 	float resistance = 0.0;
 
+	char orginal_conn = conn;
+	conn = toupper(conn);
+
 	if( array == 0) {
 		return -1;
 	}
 	
 	if(conn != 'S' && conn != 'P') {
-		printf("Wrong connection supplied. You passed %c, value should be either S or P", conn);
+		printf("Wrong connection supplied. You passed %c, value should be either S or P", orginal_conn);
 		return -1;
 	}
 	

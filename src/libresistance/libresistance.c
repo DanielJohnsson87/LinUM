@@ -30,7 +30,6 @@ float calc_resistance_s(int count, char conn, float *array);
 float calc_resistance(int count, char conn, float *array) {
 	float resistance = 0.0;
 
-	char orginal_conn = conn;
 	conn = toupper(conn);
 
 	if( array == 0) {

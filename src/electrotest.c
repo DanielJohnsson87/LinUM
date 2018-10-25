@@ -60,6 +60,14 @@ int main (void) {
             if (correct_input == 0){
                 printf("%s", error_msg);
             }
+            else{
+                if (toupper(connection) != 'S' && toupper(connection) != 'P'){
+                    correct_input = 0;
+                    input[strcspn(input, "\n")] = 0; // trim newline
+                    printf("Felaktig angiven koppling. Du angav\n%s"
+                            "\ninmating skall vara S eller P\n", input);
+                }
+            }
         }
         else{
             printf("%s", error_msg);
@@ -110,7 +118,8 @@ int main (void) {
     resistor = calc_resistance(component_count, connection, components);
     
     if (resistor == -1){
-      exit(-1);  
+        fprintf(stderr, "calc_resistance kan ej utföra beräkning\n");
+        exit(-1);  
     }
     else{
         printf("Ersättningsresistans:\n");

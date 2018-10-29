@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "calc_resistance.h"
+#include "libresistance.h"
 int main()
 {
   int count;
